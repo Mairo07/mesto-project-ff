@@ -1,31 +1,31 @@
-// обьявляем переменную, чтобы она была доступна внутри 2х функций - closeModal и openModal
-let handleModalKeydown = null;
-
 function openModal(modal) {
-  modal.classList.add("popup_is-opened");
-
-  handleModalKeydown = (evt) => {
-    if (evt.key === "Escape") {
-      closeModal(modal);
-    }
-  };
-
-  document.addEventListener("keydown", handleModalKeydown);
+  modal.classList.add('popup_is-opened');
+  document.addEventListener('keydown', handleEscape);
 }
 
 function closeModal(modal) {
-  modal.classList.remove("popup_is-opened");
-  document.removeEventListener("keydown", handleModalKeydown);
-  handleModalKeydown = null;
+  modal.classList.remove('popup_is-opened');
+  document.removeEventListener('keydown', handleEscape);
 }
 
-function setCloseModal(modal) {
-  const closeButton = modal.querySelector(".popup__close");
-  modal.addEventListener("click", (evt) => {
-    const target = evt.target;
-    if (target === modal || target === closeButton) {
-      closeModal(modal);
-    }
+function handleEscape(evt) {
+  if (evt.key === 'Escape') {
+    const openedModal = document.querySelector('.popup_is-opened');
+    closeModal(openedModal);
+  }
+}
+
+function setCloseModal(modals) {
+  modals.forEach((modal) => {
+    modal.addEventListener('mousedown', (evt) => {
+      const target = evt.target;
+      if (
+        target.classList.contains('popup_is-opened') ||
+        target.classList.contains('popup__close')
+      ) {
+        closeModal(modal);
+      }
+    });
   });
 }
 
