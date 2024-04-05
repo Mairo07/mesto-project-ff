@@ -1,0 +1,14 @@
+.popup__error_visible {
+  position: absolute;
+  display: block;
+  margin-top: 5px;
+  margin-top: -28px;
+  color: rgb(255, 0, 0);
+  font-family: Inter;
+  font-size: 12px;
+  text-align: left;
+}
+
+.popup__error_visible:last-of-type {
+  margin-top: 2px;
+}
