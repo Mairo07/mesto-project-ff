@@ -1,6 +1,5 @@
-function createCard(cardData, cardHandlers, profileInfo) {
-  const cardTemplate = document.querySelector('#card-template').content;
-  const cardItem = cardTemplate.querySelector('.card').cloneNode(true);
+function createCard(template, cardData, cardHandlers, profileInfo) {
+  const cardItem = getCardTemplate(template, '.card');
   const deleteButton = cardItem.querySelector('.card__delete-button');
   const cardImage = cardItem.querySelector('.card__image');
   const likeButton = cardItem.querySelector('.card__like-button');
@@ -66,6 +65,10 @@ function createCard(cardData, cardHandlers, profileInfo) {
   });
 
   return cardItem;
+}
+
+function getCardTemplate(template, selector) {
+  return template.querySelector(selector).cloneNode(true);
 }
 
 function handleDeleteCardFromDOM(card) {

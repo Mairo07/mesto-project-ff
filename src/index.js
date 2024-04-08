@@ -1,5 +1,5 @@
 import './pages/index.css';
-import { createCard } from './scripts/cards';
+import { createCard } from './scripts/card';
 import { openModal, closeModal, setCloseModal } from './scripts/modal';
 import { enableValidation, clearValidation } from './scripts/validation';
 import {
@@ -11,10 +11,11 @@ import {
   putCardLike,
   deleteCardLike,
   editProfileAvatar,
-  dataLoading,
 } from './scripts/api';
+import { dataLoading } from './scripts/utils';
 
 const container = document.querySelector('.content');
+const cardTemplate = document.querySelector('#card-template').content;
 const placesList = container.querySelector('.places__list');
 const profileEditButton = container.querySelector('.profile__edit-button');
 const profileAddButton = container.querySelector('.profile__add-button');
@@ -97,6 +98,7 @@ function handleEditFormSubmit(evt) {
     .then((profileData) => {
       profileTitle.textContent = profileData.name;
       profileDescription.textContent = profileData.about;
+      closeModal(profileEditModal);
     })
     .catch((err) => {
       console.log(`Ошибка обновления данных профиля: ${err}`);
@@ -104,19 +106,17 @@ function handleEditFormSubmit(evt) {
     .finally(() => {
       dataLoading(evt.submitter, false);
     });
-
-  closeModal(profileEditModal);
 }
 
 function handleNewCardFormSubmit(evt) {
   evt.preventDefault();
   dataLoading(evt.submitter, true);
-  const form = evt.target;
   const name = imageNameInput.value;
   const link = imageUrlInput.value;
   Promise.all([addCard(name, link), getProfileInfo()])
     .then(([cardData, profileData]) => {
       renderCard(cardData, profileData);
+      closeModal(newCardAddModal);
     })
     .catch((err) => {
       console.log(`Ошибка добавления поста: ${err}`);
@@ -124,18 +124,16 @@ function handleNewCardFormSubmit(evt) {
     .finally(() => {
       dataLoading(evt.submitter, false);
     });
-  closeModal(newCardAddModal);
-  form.reset();
 }
 
 function handleEditProfileAvatarFormSubmit(evt) {
   evt.preventDefault();
   dataLoading(evt.submitter, true);
-  const form = evt.target;
   const link = profileAvatarInput.value;
   editProfileAvatar(link)
     .then((data) => {
       profileImage.style.backgroundImage = `url('${data.avatar}')`;
+      closeModal(profileAvatarEditModal);
     })
     .catch((err) => {
       console.log(`Ошибка обновления аватара: ${err}`);
@@ -143,8 +141,6 @@ function handleEditProfileAvatarFormSubmit(evt) {
     .finally(() => {
       dataLoading(evt.submitter, false);
     });
-  closeModal(profileAvatarEditModal);
-  form.reset();
 }
 
 function handleOpenImageModal(link, name) {
@@ -160,7 +156,7 @@ function handleOpenConfirmCardDeleteModal() {
 }
 
 function renderCard(card, profileInfo, method = 'prepend') {
-  const cardElement = createCard(card, cardHandlers, profileInfo);
+  const cardElement = createCard(cardTemplate, card, cardHandlers, profileInfo);
   placesList[method](cardElement);
 }
 
@@ -178,14 +174,13 @@ profileEditButton.addEventListener('click', () => {
 });
 
 profileAddButton.addEventListener('click', () => {
-  imageNameInput.value = '';
-  imageUrlInput.value = '';
+  newCardForm.reset();
   clearValidation(newCardForm, validationConfig);
   openModal(newCardAddModal);
 });
 
 profileImage.addEventListener('click', () => {
-  profileAvatarInput.value = '';
+  profileAvatarEditForm.reset();
   clearValidation(profileAvatarEditForm, validationConfig);
   openModal(profileAvatarEditModal);
 });
