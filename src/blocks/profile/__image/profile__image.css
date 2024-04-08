@@ -7,6 +7,18 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile__image:hover::before {
+  content: '';
+  background: rgba(0, 0, 0, 0.8) url('../../../images/edit-avatar-icon.svg') center/26px 26px no-repeat;
+  display: block;
+  position: absolute;
+  width: inherit;
+  height: inherit;
 }
 
 @media screen and (max-width: 740px) {

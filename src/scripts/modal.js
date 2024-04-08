@@ -1,5 +1,3 @@
-console.log('Файл modal начало')
-
 function openModal(modal) {
   modal.classList.add('popup_is-opened');
   document.addEventListener('keydown', handleEscape);
@@ -32,4 +30,3 @@ function setCloseModal(modals) {
 }
 
 export { openModal, closeModal, setCloseModal };
-console.log('Файл modal конец')
