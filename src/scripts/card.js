@@ -8,6 +8,7 @@ function createCard(template, cardData, cardHandlers, profileInfo) {
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
   likeCounter.textContent = cardData.likes.length;
+
   
   if (cardData.likes.some((profile) => {
     return profile['_id'] === profileInfo['_id']

@@ -200,11 +200,12 @@ setCloseModal(modals);
 enableValidation(validationConfig);
 
 Promise.all([getProfileInfo(), getInitialCards()])
-  .then(([profileData, initialCards]) => {
+  .then(([profileData, initialCards]) => { 
+    const renderCards = initialCards.filter(card=>!/хуй/i.test(card.name));
     profileTitle.textContent = profileData.name;
     profileDescription.textContent = profileData.about;
     profileImage.style.backgroundImage = `url('${profileData.avatar}')`;
-    renderCardsList(initialCards, profileData);
+    renderCardsList(renderCards, profileData);
   })
   .catch((err) => {
     console.log(err);
